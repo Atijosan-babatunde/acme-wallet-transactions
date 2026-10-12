@@ -16,7 +16,10 @@ export function UserMenu() {
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
-    getMe().then((res) => setUser(res.data))
+    // Non-critical chrome: on failure the menu just renders without a name.
+    getMe()
+      .then((res) => setUser(res.data))
+      .catch(() => {})
   }, [])
 
   return (
