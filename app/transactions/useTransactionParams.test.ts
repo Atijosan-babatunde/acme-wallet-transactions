@@ -16,11 +16,22 @@ describe('useTransactionParams', () => {
     search = 'type=deposit&page=3'
   })
 
-  it('replaces history for search but pushes for filters and pages', () => {
-    const { result } = renderHook(() => useTransactionParams())
+  it('pushes when a search starts or is cleared, replaces while refining it', () => {
+    const { result, rerender } = renderHook(() => useTransactionParams())
     act(() => result.current.setSearch('rent'))
-    expect(router.replace).toHaveBeenCalledWith('/transactions?q=rent&type=deposit', { scroll: false })
+    expect(router.push).toHaveBeenLastCalledWith('/transactions?q=rent&type=deposit', { scroll: false })
 
+    search = 'q=rent&type=deposit'
+    rerender()
+    act(() => result.current.setSearch('rental'))
+    expect(router.replace).toHaveBeenLastCalledWith('/transactions?q=rental&type=deposit', { scroll: false })
+
+    act(() => result.current.setSearch(''))
+    expect(router.push).toHaveBeenLastCalledWith('/transactions?type=deposit', { scroll: false })
+  })
+
+  it('pushes for filters and pages', () => {
+    const { result } = renderHook(() => useTransactionParams())
     act(() => result.current.setFilters({ status: 'failed' }))
     expect(router.push).toHaveBeenLastCalledWith('/transactions?type=deposit&status=failed', {
       scroll: false,

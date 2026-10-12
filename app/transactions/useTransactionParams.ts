@@ -8,7 +8,8 @@ import { buildSearch, parseParams, type TransactionParams } from '@/lib/transact
  * because it reads useSearchParams.
  *
  * History policy:
- * - search terms `replace` (one history entry per keystroke would make Back useless)
+ * - starting or clearing a search `push`es, so Back returns to the unfiltered list; refining
+ *   an existing search `replace`s (one entry per debounced keystroke would make Back useless)
  * - type/status filters and pages `push`, so Back steps through them
  * - opening details `push`es, so Back (or the Android back gesture) closes the drawer
  */
@@ -31,7 +32,13 @@ export function useTransactionParams() {
 
   return {
     params,
-    setSearch: useCallback((q: string) => navigate({ q }, 'replace'), [navigate]),
+    setSearch: useCallback(
+      (q: string) => {
+        const startsOrClears = (params.q === '') !== (q.trim() === '')
+        navigate({ q }, startsOrClears ? 'push' : 'replace')
+      },
+      [navigate, params.q]
+    ),
     setFilters: useCallback(
       (patch: Pick<Partial<TransactionParams>, 'type' | 'status'>) => navigate(patch, 'push'),
       [navigate]
