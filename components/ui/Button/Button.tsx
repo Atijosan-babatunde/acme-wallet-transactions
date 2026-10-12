@@ -7,6 +7,7 @@ export interface ButtonProps {
   children?: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost'
   size?: 'sm' | 'md'
+  type?: 'button' | 'submit'
   iconLeft?: IconName
   iconRight?: IconName
   fullWidth?: boolean
@@ -14,12 +15,14 @@ export interface ButtonProps {
   onClick?: () => void
   className?: string
   'aria-label'?: string
+  'aria-current'?: 'page'
 }
 
 export function Button({
   children,
   variant = 'primary',
   size = 'md',
+  type = 'button',
   iconLeft,
   iconRight,
   fullWidth,
@@ -28,22 +31,19 @@ export function Button({
   className,
   ...rest
 }: ButtonProps) {
+  // A real <button>: focusable, activates with Enter/Space, announced as a button, and
+  // `disabled` actually blocks interaction. It used to be a <div> with onClick.
   return (
-    <div
-      className={cx(
-        styles.button,
-        styles[variant],
-        styles[size],
-        fullWidth && styles.fullWidth,
-        disabled && styles.disabled,
-        className
-      )}
-      onClick={disabled ? undefined : onClick}
+    <button
+      type={type}
+      className={cx(styles.button, styles[variant], styles[size], fullWidth && styles.fullWidth, className)}
+      onClick={onClick}
+      disabled={disabled}
       {...rest}
     >
       {iconLeft && <Icon name={iconLeft} size={16} />}
       {children}
       {iconRight && <Icon name={iconRight} size={16} />}
-    </div>
+    </button>
   )
 }
