@@ -38,9 +38,16 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  padding: 0;
+  border: 0;
   border-radius: var(--radius-md);
+  background: none;
   color: var(--color-text-muted);
   cursor: pointer;
+}
+
+.panel:focus {
+  outline: none;
 }
 
 .close:hover {
