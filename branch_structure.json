@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "main",
+    "origin",
+    "transactions-page"
+  ],
+  "parent": {
+    "main": null,
+    "origin": "main",
+    "transactions-page": "main"
+  },
+  "order": [
+    "main",
+    "origin",
+    "transactions-page"
+  ]
+}

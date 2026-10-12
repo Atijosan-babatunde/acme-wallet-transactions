@@ -14,6 +14,11 @@
   cursor: pointer;
 }
 
+.grouped {
+  /* Time-only rows: a fixed amount column keeps status badges aligned even for ₦2.5bn. */
+  grid-template-columns: 40px minmax(0, 1fr) 112px 168px;
+}
+
 .row:last-child {
   border-bottom: 0;
 }
