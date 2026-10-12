@@ -1,8 +1,9 @@
 .row {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) auto auto;
+  grid-template-columns: 40px minmax(0, 1fr) 112px minmax(120px, auto);
+  grid-template-areas: 'icon main status end';
   align-items: center;
-  gap: var(--space-4);
+  column-gap: var(--space-4);
   width: 100%;
   min-height: 68px;
   padding: var(--space-3) var(--space-6);
@@ -21,18 +22,16 @@
   background: var(--color-bg-subtle);
 }
 
+.row:focus-visible {
+  outline-offset: -2px;
+}
+
 .icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
+  grid-area: icon;
 }
 
 .main {
+  grid-area: main;
   min-width: 0;
 }
 
@@ -53,7 +52,12 @@
   white-space: nowrap;
 }
 
+.status {
+  grid-area: status;
+}
+
 .end {
+  grid-area: end;
   display: block;
   text-align: right;
 }
@@ -74,4 +78,25 @@
   font-size: var(--text-xs);
   color: var(--color-text-subtle);
   white-space: nowrap;
+}
+
+/* Mobile (Figma 375px frame): amount on top, status under it, no time. */
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon main end'
+      'icon main status';
+    column-gap: var(--space-3);
+    row-gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .status {
+    justify-self: end;
+  }
+
+  .meta {
+    display: none;
+  }
 }

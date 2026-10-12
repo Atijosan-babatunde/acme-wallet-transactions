@@ -27,4 +27,16 @@ describe('TransactionRow', () => {
     render(<TransactionRow transaction={{ ...base, fee: 30 }} />)
     expect(screen.getByText(/Fee \$0\.30/)).toBeInTheDocument()
   })
+
+  it('labels the status in text and shows counterparty initials', () => {
+    render(
+      <TransactionRow
+        transaction={{ ...base, type: 'transfer_out', status: 'pending', counterparty: 'Kwame Mensah' }}
+        timeOnly
+      />
+    )
+    expect(screen.getByText('Pending')).toBeInTheDocument()
+    expect(screen.getByText('KM')).toBeInTheDocument()
+    expect(screen.getByText('-$45.99')).toBeInTheDocument()
+  })
 })
