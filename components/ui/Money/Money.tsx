@@ -1,8 +1,7 @@
 import type { Currency } from '@/types/api'
 import { cx } from '@/lib/cx'
+import { formatMoney } from '@/lib/format/money'
 import styles from './Money.module.css'
-
-const SYMBOLS: Record<Currency, string> = { NGN: '₦', USD: '$', GHS: 'GH₵' }
 
 export interface MoneyProps {
   /** Minor units. */
@@ -14,12 +13,10 @@ export interface MoneyProps {
 }
 
 export function Money({ amount, currency, sign, className }: MoneyProps) {
-  const prefix = sign === 'credit' ? '+' : sign === 'debit' ? '-' : ''
+  const signed = sign === 'debit' ? -Math.abs(amount) : sign === 'credit' ? Math.abs(amount) : amount
   return (
     <span className={cx(styles.money, className)}>
-      {prefix}
-      {SYMBOLS[currency]}
-      {(amount / 100).toLocaleString()}
+      {formatMoney(signed, currency, { signDisplay: sign ? 'always' : 'auto' })}
     </span>
   )
 }

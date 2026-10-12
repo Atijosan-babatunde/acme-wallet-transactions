@@ -22,4 +22,9 @@ describe('TransactionRow', () => {
     expect(container.querySelector('img')).toBeNull()
     expect(screen.getByText(narration)).toBeInTheDocument()
   })
+
+  it('shows the fee in the transaction currency and major units', () => {
+    render(<TransactionRow transaction={{ ...base, fee: 30 }} />)
+    expect(screen.getByText(/Fee \$0\.30/)).toBeInTheDocument()
+  })
 })
